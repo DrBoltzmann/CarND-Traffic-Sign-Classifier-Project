@@ -1,14 +1,14 @@
 # **Traffic Sign Recognition** 
 
-## Writeup
+## Project Writeup
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+### This project involved the implementation the LeNet CNN architecture to classify German traffic signs.
 
 ---
 
 **Build a Traffic Sign Recognition Project**
 
-The goals / steps of this project are the following:
+The goals / steps of this project included the following:
 * Load the data set (see below for links to the project data set)
 * Explore, summarize and visualize the data set
 * Design, train and test a model architecture
@@ -19,9 +19,9 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
+[image1]: ./output_images/training_images_distribution.png "Training Images Distribution"
+[image2]: ./output_images/unprocessed_images.png "Unprocessed Images"
+[image3]: ./examples/preprocessed_images.png "Preprocessed Images"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
 [image5]: ./examples/placeholder.png "Traffic Sign 2"
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
@@ -29,31 +29,30 @@ The goals / steps of this project are the following:
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
 
 ## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+### Here the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually listed to describe how each point was implementated.  
 
 ---
 ### Writeup / README
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+This document describes the solution approach, here is a link to the final [project code](https://github.com/DrBoltzmann/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ### Data Set Summary & Exploration
 
 #### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+In thye data exploration and summary I used numpy, pandas, and matplotlib to build basic summary statistics of the traffic signs data set and visualized class distributions:
 
-* The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 34799 images
+* The size of the validation set is 4410 images
+* The size of test set is 12630 images
+* The shape of a traffic sign image is (32, 32, 3)
+* The number of unique classes/labels in the data set is 43
 
 #### 2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Basic distributions visualizations of the images and classes were created:
 
 ![alt text][image1]
 
@@ -61,19 +60,23 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+In the preprocessing development, various transformations were applied and their influence on training dataset loss was evaluated. Initally only grayscale conversion and normalization was used, and only about a 60% accuracy could be achieved. After evaluation of added preprocessing steps and rerunning the model, the following preprocessing pipeline was finalized:
 
-Here is an example of a traffic sign image before and after grayscaling.
+* Convert to grayscale in order to reduce the image size and focus on building contrast between light and dark regions of the images.
+
+* The image histogram was equalized (cv2.equalizeHist), which stretches the histogram to either ends of the light to dark range, which ideally improves contrast of the images.
+
+* Gaussian blur was applied (cv2.GaussianBlur) to reduce image noise.
+
+* Shapening was applied (cv2.addWeighted) to ideally improve segmentation in the images to differentate different features.
+
+* Normalization was applied using cv2.normalize.
+
+Here is an example the traffic signs before preprocessing:
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because ...
-
-I decided to generate additional data because ... 
-
-To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
+Here are the images after running the preprocessing. The features are easier to discern, and the test accuracy increased to ~90%:
 
 ![alt text][image3]
 
