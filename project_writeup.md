@@ -21,12 +21,9 @@ The goals / steps of this project included the following:
 
 [image1]: ./output_images/training_images_distribution.png "Training Images Distribution"
 [image2]: ./output_images/unprocessed_images.png "Unprocessed Images"
-[image3]: ./examples/preprocessed_images.png "Preprocessed Images"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image3]: ./output_images/preprocessed_images.png "Preprocessed Images"
+[image4]: ./output_images/downloaded_traffic_signs.png "Downloaded Traffic Signs"
+[image5]: ./output_images/softmax_plot.png "Probability Plot"
 
 ## Rubric Points
 ### Here the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually listed to describe how each point was implementated.  
@@ -107,21 +104,17 @@ I used the classic LeNet architecture,  the final output is equal to the number 
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
+Model training included 20 epochs, a learning rate of 0.001, and a batch size of 128.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of 99.5%
+* validation set accuracy of 95%
+* test set accuracy of 91%
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+Solution approach:
+* The LeNet architecture was implemented to provide a basic approach and see what accuracy it would provide (it was recommended to use in the problem description). The initial accuracy was ~60% with grayscale and normalization preprocessing. Modifing learning rate didn't have much influence. I then went back to the preprocessing function and included additonal functions including histogram normalization, Gaussian blur, sharpening, and normalization with OpenCV. This dramatically increased the train accuracy to ~90%. I applied dropout in the architecture, first with a keep_prob = 0.5, and then increased to 0.7, which lead to a an increase of a few % in accuracy. At this point I had been only using 5 epochs to evaluate the inital changes, after I saw the train accruacy was above 90% from the first few epochs, I increased the total epochs to 20, which provided enough iterations to achieve a 95% test accuracy. I had considered performing data augmentation to generate more training data, but since the test accuracy was above 93%, I decided to not augment the data set at this time.
 
 If a well known architecture was chosen:
 * What architecture was chosen?
@@ -133,44 +126,43 @@ If a well known architecture was chosen:
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+I found the following five German traffic signs via Google:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][image4]
 
-The first image might be difficult to classify because ...
+Generally speaking, the test images all reflected features similar to the features distribution found in the test data set, therefore, I would not expect there to be any serious issues with classifing them.
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-Here are the results of the prediction:
+Prediction results and Softmax value:
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Image					| Prediction			| Softmax Output	| 
+|:---------------------:|:---------------------:|:-----------------:| 
+| Stop Sign				| Stop sign   			| 0.52				|
+| 30 km/h				| 30 km/h 				| 0.46				|
+| Road Work				| Road Work				| 0.44				|
+| Right Turn Ahead 		| Right Turn Ahead		| 1.0				|
+| 70 km/h				| 70 km/h      			| 0.99				|
 
-
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The top five soft max probabilities were:
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+| Image					| Softmax Output	| 
+|:---------------------:|:-----------------:| 
+| Stop Sign				| 0.52				|
+| 30 km/h				| 0.46				|
+| Road Work				| 0.44				|
+| Right Turn Ahead 		| 1.0				|
+| 70 km/h				| 0.99				|
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+When plotted, the Softmax probability distributions are the following:
 
+![alt text][image5]
 
-For the second image ... 
+The model predicted the traffic signs well. The quality of the images was rather good, each appears to have been taken in good lighting, which provided a high quailty data set to evaluate. It would be possible that for other images of lower light quality, additional operations would be needed in order to provide better detail in the image before evaluation with the model.
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
