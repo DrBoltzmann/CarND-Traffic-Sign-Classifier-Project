@@ -24,6 +24,7 @@ The goals / steps of this project included the following:
 [image3]: ./output_images/preprocessed_images.png "Preprocessed Images"
 [image4]: ./output_images/downloaded_traffic_signs.png "Downloaded Traffic Signs"
 [image5]: ./output_images/softmax_plot.png "Probability Plot"
+[image6]: ./references/Comparison-of-Adam-to-Other-Optimization-Algorithms-Training-a-Multilayer-Perceptron.png "Optimizer Comparison"
 
 ## Rubric Points
 ### Here the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually listed to describe how each point was implementated.  
@@ -104,7 +105,18 @@ I used the classic LeNet architecture,  the final output is equal to the number 
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-Model training included 20 epochs, a learning rate of 0.001, and a batch size of 128.
+The final model training included 20 epochs, a learning rate of 0.001, and a batch size of 128.
+
+In inital training where I looked at data preprocessing I only used 5 epochs, and only inreased to 20 after I had seen that the model was learning sufficiently well to converge in the desired range and achieve at least the minimum 93% train accuracy within 20 epochs.
+
+I looked briefly at different learning rates, 0.01 did not provide any precieved benefit and I focused on using 0.001, which is similar to other CNNs I have used in the past (for example, the CIFAR10 classification project in the Udacity Deep Learning Foundations course).
+
+I looked at larger batch sizes brifely, the difference between 128 and 256 didn't seem to provide any benefit. I was running the model on my MSI GT62VR machine on the CPU and 16 GB of RAM, which in the past worked well with a batch size of 128, but I didn't see any benefit in using a higher batch size, as my machine only needed about 1 minute per epoch in the training stage. This was managable enough for the purposes of this project. Otherwise I may have looked at using a cloud-based machine for better performance (and with a GPU).
+
+The Adam Optimizer was used as I was basing the model off of the standard LeNet architecture. I have also used Adam in different projects, on Udacity and on the deeplearning.ai Coursera projects. Since I was achieving good results with Adam, I didn't see any need to modifiy this selection. If I had still had poor results after the other steps, I may have looked more deeply at using a different optimizer. Comparisons between Adam and other approaches such as AdaGrad, RMSProp, etc. have been done by other researchers, and Adam has been shown to be a good optimizer to use (https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/).
+
+![alt text][image6]
+Comparison of Adam to Other Optimization Algorithms Training a Multilayer Perceptron Taken from Adam: A Method for Stochastic Optimization, 2015.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
